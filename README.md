@@ -2,7 +2,7 @@
 
 ## Overview
 
-**FinVista** (also branded as **Welth**) is a modern personal finance management platform built on **Next.js 13**.
+**FinVista** is a modern personal finance management platform built on **Next.js 13**.
 It helps users track budgets, manage multiple bank accounts, add transactions, and monitor spending trends.
 
 The application features a responsive dashboard, dynamic charts, and CRUD forms for accounts and transactions.

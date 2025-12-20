@@ -41,10 +41,15 @@ const LandingPage = () => {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuresData.map((feature, index) => (
-              <Card className="p-6" key={index}>
+              <Card 
+                className="p-6 transition-all duration-300 hover:shadow-xl hover:scale-105 hover:-translate-y-2 cursor-pointer border-2 hover:border-blue-500" 
+                key={index}
+              >
                 <CardContent className="space-y-4 pt-4">
-                  {feature.icon}
-                  <h3 className="text-xl font-semibold">{feature.title}</h3>
+                  <div className="transition-transform duration-300 hover:scale-110">
+                    {feature.icon}
+                  </div>
+                  <h3 className="text-xl font-semibold transition-colors duration-300 hover:text-blue-600">{feature.title}</h3>
                   <p className="text-gray-600">{feature.description}</p>
                 </CardContent>
               </Card>
@@ -79,7 +84,10 @@ const LandingPage = () => {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonialsData.map((testimonial, index) => (
-              <Card key={index} className="p-6">
+              <Card 
+                key={index} 
+                className="p-6 transition-all duration-300 hover:shadow-xl hover:scale-105 hover:-translate-y-2 cursor-pointer border-2 hover:border-blue-500"
+              >
                 <CardContent className="pt-4">
                   <div className="flex items-center mb-4">
                     <Image
@@ -87,10 +95,10 @@ const LandingPage = () => {
                       alt={testimonial.name}
                       width={40}
                       height={40}
-                      className="rounded-full"
+                      className="rounded-full transition-transform duration-300 hover:scale-110"
                     />
                     <div className="ml-4">
-                      <div className="font-semibold">{testimonial.name}</div>
+                      <div className="font-semibold transition-colors duration-300 hover:text-blue-600">{testimonial.name}</div>
                       <div className="text-sm text-gray-600">
                         {testimonial.role}
                       </div>
@@ -112,7 +120,7 @@ const LandingPage = () => {
           </h2>
           <p className="text-blue-100 mb-8 max-w-2xl mx-auto">
             Join thousands of users who are already managing their finances
-            smarter with Welth
+            smarter with FinVista
           </p>
           <Link href="/dashboard">
             <Button
