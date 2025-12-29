@@ -2,8 +2,9 @@ import { Suspense } from "react";
 import { getAccountWithTransactions } from "@/actions/account";
 import { BarLoader } from "react-spinners";
 import { TransactionTable } from "../_components/transaction-table";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { AccountChart } from "../_components/account-chart";
+import { DeleteAccountButton } from "../_components/delete-account-button";
 
 export default async function AccountPage({ params }) {
   const { id } = await params;
@@ -28,13 +29,16 @@ export default async function AccountPage({ params }) {
           </p>
         </div>
 
-        <div className="text-right pb-2">
-          <div className="text-xl sm:text-2xl font-bold">
-            ${parseFloat(account.balance).toFixed(2)}
+        <div className="flex items-end gap-4">
+          <div className="text-right pb-2">
+            <div className="text-xl sm:text-2xl font-bold">
+              ${parseFloat(account.balance).toFixed(2)}
+            </div>
+            <p className="text-sm text-muted-foreground">
+              {account._count.transactions} Transactions
+            </p>
           </div>
-          <p className="text-sm text-muted-foreground">
-            {account._count.transactions} Transactions
-          </p>
+          <DeleteAccountButton accountId={id} accountName={account.name} />
         </div>
       </div>
 

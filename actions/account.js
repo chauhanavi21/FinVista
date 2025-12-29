@@ -59,6 +59,11 @@ export async function bulkDeleteTransactions(transactionIds) {
 
     if (!user) throw new Error("User not found");
 
+    // Validate input
+    if (!Array.isArray(transactionIds) || transactionIds.length === 0) {
+      return { success: false, error: "No transactions selected" };
+    }
+
     // Get transactions to calculate balance changes
     const transactions = await db.transaction.findMany({
       where: {
@@ -66,6 +71,20 @@ export async function bulkDeleteTransactions(transactionIds) {
         userId: user.id,
       },
     });
+
+    // Validate that all requested transactions were found and belong to user
+    if (transactions.length === 0) {
+      return { success: false, error: "No valid transactions found to delete" };
+    }
+
+    if (transactions.length !== transactionIds.length) {
+      // Some transactions weren't found or don't belong to user
+      const foundIds = transactions.map((t) => t.id);
+      const missingIds = transactionIds.filter((id) => !foundIds.includes(id));
+      console.warn(
+        `Some transactions not found or unauthorized: ${missingIds.join(", ")}`
+      );
+    }
 
     // Group transactions by account to update balances
     const accountBalanceChanges = transactions.reduce((acc, transaction) => {
@@ -79,10 +98,12 @@ export async function bulkDeleteTransactions(transactionIds) {
 
     // Delete transactions and update account balances in a transaction
     await db.$transaction(async (tx) => {
-      // Delete transactions
+      // Delete only the transactions we found (for safety)
+      const transactionIdsToDelete = transactions.map((t) => t.id);
+      
       await tx.transaction.deleteMany({
         where: {
-          id: { in: transactionIds },
+          id: { in: transactionIdsToDelete },
           userId: user.id,
         },
       });
@@ -105,7 +126,90 @@ export async function bulkDeleteTransactions(transactionIds) {
     revalidatePath("/dashboard");
     revalidatePath("/account/[id]");
 
-    return { success: true };
+    return { 
+      success: true, 
+      deletedCount: transactions.length,
+      requestedCount: transactionIds.length 
+    };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+}
+
+export async function deleteAccount(accountId) {
+  try {
+    const { userId } = await auth();
+    if (!userId) throw new Error("Unauthorized");
+
+    const user = await db.user.findUnique({
+      where: { clerkUserId: userId },
+    });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    // Check if account exists and belongs to user
+    const account = await db.account.findUnique({
+      where: {
+        id: accountId,
+        userId: user.id,
+      },
+      include: {
+        _count: {
+          select: { transactions: true },
+        },
+      },
+    });
+
+    if (!account) {
+      return { success: false, error: "Account not found" };
+    }
+
+    // Prevent deleting the last/default account
+    const allAccounts = await db.account.findMany({
+      where: { userId: user.id },
+    });
+
+    if (allAccounts.length === 1) {
+      return {
+        success: false,
+        error: "Cannot delete your last account. Please create another account first.",
+      };
+    }
+
+    // If this is the default account, set another account as default
+    if (account.isDefault) {
+      const otherAccount = await db.account.findFirst({
+        where: {
+          userId: user.id,
+          id: { not: accountId },
+        },
+      });
+
+      if (otherAccount) {
+        await db.account.update({
+          where: { id: otherAccount.id },
+          data: { isDefault: true },
+        });
+      }
+    }
+
+    // Delete the account (transactions will be automatically deleted due to cascade)
+    await db.account.delete({
+      where: {
+        id: accountId,
+        userId: user.id,
+      },
+    });
+
+    revalidatePath("/dashboard");
+    revalidatePath("/account/[id]");
+
+    return {
+      success: true,
+      deletedTransactionsCount: account._count.transactions,
+    };
   } catch (error) {
     return { success: false, error: error.message };
   }
