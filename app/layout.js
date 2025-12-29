@@ -14,17 +14,17 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <ClerkProvider>
-      <html lang="en">
+      <html lang="en" className="dark">
         <head>
-          <link rel="icon" href="/logo-sm.png" sizes="any" />
+          
         </head>
         <body className={`${inter.className}`}>
           <Header />
           <main className="min-h-screen">{children}</main>
           <Toaster richColors />
 
-          <footer className="bg-blue-50 py-12">
-            <div className="container mx-auto px-4 text-center text-gray-600">
+          <footer className="bg-gray-900 py-12 border-t border-gray-800">
+            <div className="container mx-auto px-4 text-center text-gray-400">
               <p>Made by Finvista Team</p>
             </div>
           </footer>

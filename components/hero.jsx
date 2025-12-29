@@ -85,7 +85,7 @@ const HeroSection = () => {
         <h1 className="text-5xl md:text-8xl lg:text-[105px] pb-6 gradient-title">
           Manage Your Finances <br /> with Intelligence
         </h1>
-        <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+        <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
           An AI-powered financial management platform that helps you track,
           analyze, and optimize your spending with real-time insights.
         </p>
@@ -105,7 +105,7 @@ const HeroSection = () => {
         {/* Carousel */}
         <div className="relative max-w-6xl mx-auto mt-8 md:mt-12">
           <div
-            className="relative overflow-hidden rounded-lg shadow-2xl border"
+            className="relative overflow-hidden rounded-lg shadow-2xl border border-gray-700"
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
@@ -119,7 +119,7 @@ const HeroSection = () => {
                     index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0"
                   }`}
                 >
-                  <Image
+            <Image
                     src={banner.src}
                     alt={banner.alt}
                     fill
@@ -134,17 +134,17 @@ const HeroSection = () => {
             {/* Navigation Arrows */}
             <button
               onClick={goToPrevious}
-              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg transition-all duration-200 hover:scale-110"
+              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-20 bg-gray-900/80 hover:bg-gray-900 rounded-full p-2 shadow-lg transition-all duration-200 hover:scale-110 border border-gray-700"
               aria-label="Previous slide"
             >
-              <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-gray-800" />
+              <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             </button>
             <button
               onClick={goToNext}
-              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-20 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg transition-all duration-200 hover:scale-110"
+              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-20 bg-gray-900/80 hover:bg-gray-900 rounded-full p-2 shadow-lg transition-all duration-200 hover:scale-110 border border-gray-700"
               aria-label="Next slide"
             >
-              <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-gray-800" />
+              <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             </button>
 
             {/* Dots Indicator */}
@@ -155,8 +155,8 @@ const HeroSection = () => {
                   onClick={() => goToSlide(index)}
                   className={`transition-all duration-300 rounded-full ${
                     index === currentIndex
-                      ? "w-8 h-2 bg-white"
-                      : "w-2 h-2 bg-white/50 hover:bg-white/75"
+                      ? "w-8 h-2 bg-blue-500"
+                      : "w-2 h-2 bg-gray-600 hover:bg-gray-500"
                   }`}
                   aria-label={`Go to slide ${index + 1}`}
                 />

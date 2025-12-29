@@ -4,33 +4,28 @@ import { PenBox, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { checkUser } from "@/lib/checkUser";
-import Image from "next/image";
 
 const Header = async () => {
   await checkUser();
 
   return (
-    <header className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b">
+    <header className="fixed top-0 w-full bg-gray-900/80 backdrop-blur-md z-50 border-b border-gray-800">
       <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <Link href="/">
-          <Image
-            src={"/logo.png"}
-            alt="FinVista Logo"
-            width={240}
-            height={72}
-            className="h-14 w-auto object-contain"
-          />
+        <Link href="/" className="flex items-center">
+          <span className="text-3xl md:text-4xl font-bold finvista-gradient">
+            FinVista
+          </span>
         </Link>
 
         {/* Navigation Links - Different for signed in/out users */}
         <div className="hidden md:flex items-center space-x-8">
           <SignedOut>
-            <a href="#features" className="text-gray-600 hover:text-blue-600">
+            <a href="#features" className="text-gray-300 hover:text-blue-400 transition-colors">
               Features
             </a>
             <a
               href="#testimonials"
-              className="text-gray-600 hover:text-blue-600"
+              className="text-gray-300 hover:text-blue-400 transition-colors"
             >
               Testimonials
             </a>
@@ -42,7 +37,7 @@ const Header = async () => {
           <SignedIn>
             <Link
               href="/dashboard"
-              className="text-gray-600 hover:text-blue-600 flex items-center gap-2"
+              className="text-gray-300 hover:text-blue-400 flex items-center gap-2 transition-colors"
             >
               <Button variant="outline">
                 <LayoutDashboard size={18} />
