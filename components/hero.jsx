@@ -95,11 +95,6 @@ const HeroSection = () => {
               Get Started
             </Button>
           </Link>
-          <Link href="https://chauhanavi.com">
-            <Button size="lg" variant="outline" className="px-8 w-full sm:w-auto">
-              Watch Demo
-            </Button>
-          </Link>
         </div>
 
         {/* Carousel */}

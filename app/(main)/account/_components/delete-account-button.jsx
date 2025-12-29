@@ -20,7 +20,7 @@ export function DeleteAccountButton({ accountId, accountName }) {
 
   const handleDelete = async () => {
     const confirmed = window.confirm(
-      `Are you absolutely sure you want to delete the account "${accountName}"?\n\nThis action cannot be undone. This will permanently delete the account and ALL of its transactions. This will affect your financial records and cannot be recovered.`
+      `Are you absolutely sure you want to delete the account "${accountName}"?\n\nThis action cannot be undone. This will permanently delete the account and all of its transactions (if any). This will affect your financial records and cannot be recovered.`
     );
 
     if (!confirmed) return;
@@ -30,9 +30,12 @@ export function DeleteAccountButton({ accountId, accountName }) {
 
   useEffect(() => {
     if (deleted?.success && !deleteLoading) {
-      toast.success(
-        `Account "${accountName}" and all its transactions have been deleted successfully`
-      );
+      const transactionCount = deleted.deletedTransactionsCount || 0;
+      const message =
+        transactionCount > 0
+          ? `Account "${accountName}" and ${transactionCount} transaction${transactionCount > 1 ? "s" : ""} have been deleted successfully`
+          : `Account "${accountName}" has been deleted successfully`;
+      toast.success(message);
       router.push("/dashboard");
       router.refresh();
     }
