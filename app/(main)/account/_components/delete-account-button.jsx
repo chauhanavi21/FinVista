@@ -51,12 +51,17 @@ export function DeleteAccountButton({ accountId, accountName }) {
     <Button
       variant="destructive"
       size="sm"
-      className="mb-2"
+      className="mb-0 sm:mb-2"
       onClick={handleDelete}
       disabled={deleteLoading}
     >
-      <Trash className="h-4 w-4 mr-2" />
-      {deleteLoading ? "Deleting..." : "Delete Account"}
+      <Trash className="h-4 w-4 sm:mr-2" />
+      <span className="hidden sm:inline">
+        {deleteLoading ? "Deleting..." : "Delete Account"}
+      </span>
+      <span className="sm:hidden">
+        {deleteLoading ? "..." : "Delete"}
+      </span>
     </Button>
   );
 }
