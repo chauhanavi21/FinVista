@@ -124,7 +124,12 @@ export async function bulkDeleteTransactions(transactionIds) {
     });
 
     revalidatePath("/dashboard");
-    revalidatePath("/account/[id]");
+    const affectedAccountIds = [
+      ...new Set(transactions.map((t) => t.accountId).filter(Boolean)),
+    ];
+    for (const id of affectedAccountIds) {
+      revalidatePath(`/account/${id}`);
+    }
 
     return { 
       success: true, 
@@ -204,7 +209,7 @@ export async function deleteAccount(accountId) {
     });
 
     revalidatePath("/dashboard");
-    revalidatePath("/account/[id]");
+    revalidatePath(`/account/${accountId}`);
 
     return {
       success: true,
